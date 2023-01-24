@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity(name = "Cliente")
@@ -26,7 +27,7 @@ public class ClienteModel {
      private String sobrenome;
 
      @Column(name = "nascimentoDate")
-     private Date dataNascimento;
+     private LocalDate dataNascimento;
 
      @Column(name = "idade")
      private Long idade;
