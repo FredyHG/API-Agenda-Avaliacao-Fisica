@@ -1,5 +1,5 @@
 CREATE TABLE avaliacao(
-    id int primary key,
+    id bigint not null primary key,
     datahora date,
     status boolean,
     alergias varchar(130),

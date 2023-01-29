@@ -3,8 +3,8 @@ package com.avaliacao.fisica.avp.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
-import java.util.Date;
+import java.sql.Date;
+
 
 @Entity(name = "avaliacao")
 @Data
@@ -18,7 +18,7 @@ public class AvaliacaoModel {
     private Long id;
 
     @Column(name = "datahora")
-    private LocalDate dataHora;
+    private Date dataHora;
 
     @Column(name = "status")
     private boolean status;

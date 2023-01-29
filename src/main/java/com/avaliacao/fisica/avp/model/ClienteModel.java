@@ -6,14 +6,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.time.LocalDate;
-import java.util.Date;
 
-@Entity(name = "Cliente")
+@Entity
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "cliente")
 public class ClienteModel {
 
      @Id
@@ -26,8 +27,8 @@ public class ClienteModel {
      @Column(name = "sobrenome")
      private String sobrenome;
 
-     @Column(name = "nascimentoDate")
-     private LocalDate dataNascimento;
+     @Column(name = "nascimentodate")
+     private Date dataNascimento;
 
      @Column(name = "idade")
      private Long idade;

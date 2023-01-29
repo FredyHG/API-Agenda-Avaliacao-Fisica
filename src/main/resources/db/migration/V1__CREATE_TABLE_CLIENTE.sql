@@ -1,5 +1,5 @@
 CREATE TABLE cliente(
-    id int primary key,
+    id SERIAL primary key ,
     nome varchar(100) NOT NULL ,
     sobrenome varchar (100) NOT NULL ,
     nascimentoDate date NOT NULL ,
