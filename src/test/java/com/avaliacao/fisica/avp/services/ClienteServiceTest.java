@@ -32,8 +32,6 @@ class ClienteServiceTest {
     @Mock
     private ClienteRepository clienteRepositoryMock;
 
-
-
     @BeforeEach
     void setUp(){
         PageImpl<ClienteModel> clientePage = new PageImpl<>(List.of(CreateNewCliente.createValidClient()));
@@ -50,9 +48,6 @@ class ClienteServiceTest {
                 .thenReturn(Optional.of(CreateNewCliente.createValidClient()));
     }
 
-
-
-
     @Test
     @DisplayName("Should be able to create Cliente")
     public void should_be_able_to_create_cliente(){
@@ -64,6 +59,7 @@ class ClienteServiceTest {
     }
 
     @Test
+    @DisplayName("Find by id throws BadRequestException when Cliente is not found")
     public void findById_ThrowsBadRequestException_WhenClienteIsNotFound(){
         BDDMockito.when(clienteRepositoryMock.findById(ArgumentMatchers.anyLong()))
                 .thenReturn(Optional.empty());
@@ -82,7 +78,7 @@ class ClienteServiceTest {
 
     @Test
     @DisplayName("Should return a pageable list of 'Clientes'")
-    public void should_return_a_pageable_list_of_Clientes(){
+    public void should_return_a_pageable_list_of_Cliente(){
         String expectedName = CreateNewCliente.createValidClient().getNome();
 
         Page<ClienteModel> clientePage = clienteService.findAllClientPageable(PageRequest.of(1,1));
@@ -94,6 +90,36 @@ class ClienteServiceTest {
                 .hasSize(1);
 
         Assertions.assertThat(clientePage.toList().get(0).getNome()).isEqualTo(expectedName);
+    }
+
+    @Test
+    @DisplayName("Should return a list of 'Cliente'")
+    public void should_return_a_list_of_Cliente(){
+
+        List<ClienteModel> listOfCliente = List.of(CreateNewCliente.createValidClient());
+
+        BDDMockito.when(clienteRepositoryMock.findAll())
+                .thenReturn(listOfCliente);
+
+        String expectedName = CreateNewCliente.createValidClient().getNome();
+
+        List<ClienteModel> clienteList = clienteService.findAllCliente();
+
+        Assertions.assertThat(clienteList).isNotNull();
+
+        Assertions.assertThat(clienteList).hasSize(1);
+
+        Assertions.assertThat(clienteList.get(0).getNome()).isEqualTo(expectedName);
+    }
+
+    @Test
+    @DisplayName("Should return a 'Cliente'")
+    public void should_return_a_Cliente() {
+        ClienteModel expectedCliente = CreateNewCliente.createValidClient();
+
+        Optional<ClienteModel> cliente = clienteService.findById(1);
+
+        Assertions.assertThat(cliente.get()).isNotNull().isEqualTo(expectedCliente);
     }
 
 

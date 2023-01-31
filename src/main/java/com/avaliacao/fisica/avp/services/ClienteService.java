@@ -9,10 +9,12 @@ import com.avaliacao.fisica.avp.utils.TitleCase;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -42,11 +44,14 @@ public class ClienteService {
 
     }
 
+    @Transactional
     public void deleteCliente(long id) {
 
         clienteRepository.delete(findByIdOrThrowBadRequestException(id));
 
     }
+
+
 
     public ClienteModel findByIdOrThrowBadRequestException(long id) {
         return clienteRepository.findById(id).orElseThrow(() -> new BadRequestException("Cliente not Found"));
@@ -56,4 +61,18 @@ public class ClienteService {
         return clienteRepository.findAll(page);
     }
 
+    public List<ClienteModel> findAllCliente() {
+        return clienteRepository.findAll();
+    }
+
+    public Optional<ClienteModel> findById(long id) {
+        return clienteRepository.findById(id);
+    }
+
+    public Page<ClienteModel> findByNomeAndSobrenome(String nome, String sobrenome){
+
+        PageImpl<ClienteModel> clientePage = new PageImpl<>(clienteRepository.findClientByNomeAndSobrenome(nome, sobrenome));
+
+        return clientePage;
+    }
 }
