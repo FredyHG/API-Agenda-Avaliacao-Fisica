@@ -46,6 +46,8 @@ class ClienteServiceTest {
 
         BDDMockito.when(clienteRepositoryMock.findById(ArgumentMatchers.anyLong()))
                 .thenReturn(Optional.of(CreateNewCliente.createValidClient()));
+
+
     }
 
     @Test
@@ -120,6 +122,15 @@ class ClienteServiceTest {
         Optional<ClienteModel> cliente = clienteService.findById(1);
 
         Assertions.assertThat(cliente.get()).isNotNull().isEqualTo(expectedCliente);
+    }
+
+    @Test
+    public void should_return_a_edited_Cliente(){
+
+        Assertions.assertThatCode(() -> clienteService.replace(CreateNewCliente.createValidPutRequest()))
+                .doesNotThrowAnyException();
+
+
     }
 
 
