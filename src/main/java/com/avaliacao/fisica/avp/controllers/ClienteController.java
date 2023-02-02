@@ -62,6 +62,19 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.OK).body(cliente);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteById(@PathVariable long id){
+        Optional<ClienteModel> clienteExist = clienteService.findById(id);
+
+        if(clienteExist.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cliente not found");
+        }
+
+        clienteService.deleteCliente(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Cliente deleted successfully");
+
+    }
 
 
 
