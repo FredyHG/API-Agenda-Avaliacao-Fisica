@@ -35,10 +35,26 @@ class ClienteControllerTest {
     @BeforeEach
     void setUp(){
         PageImpl<ClienteModel> clientePage = new PageImpl<>(List.of(CreateNewCliente.createValidClient()));
-        BDDMockito.when(clienteServiceMock.findAllClientPageable(ArgumentMatchers.any(PageRequest.class)))
+        BDDMockito.when(clienteServiceMock.findAllClientPageable(ArgumentMatchers.any()))
                 .thenReturn(clientePage);
     }
 
+
+    @Test
+    @DisplayName("Should return a pageable list of 'Clientes'")
+    public void should_return_a_pageable_list_of_Cliente(){
+        String expectedName = CreateNewCliente.createValidClient().getNome();
+
+        Page<ClienteModel> clientePage = clienteController.listAllClientes(null).getBody();
+
+        Assertions.assertThat(clientePage).isNotNull();
+
+        Assertions.assertThat(clientePage.toList())
+                .isNotEmpty()
+                .hasSize(1);
+
+        Assertions.assertThat(clientePage.toList().get(0).getNome()).isEqualTo(expectedName);
+    }
 
 
 }
