@@ -2,6 +2,7 @@ package com.avaliacao.fisica.avp.utils;
 
 import com.avaliacao.fisica.avp.model.ClienteModel;
 import com.avaliacao.fisica.avp.requests.ClientePostRequest;
+import com.avaliacao.fisica.avp.requests.ClientePutRequest;
 import org.springframework.data.domain.Page;
 
 import java.sql.Date;
@@ -34,9 +35,19 @@ public class CreateNewCliente{
 
     }
 
-//    public static Page<ClienteModel> createPageableList(){
-//
-//    }
+    public static ClientePutRequest createValidPutRequest(){
+        return ClientePutRequest.builder()
+                .id(1L)
+                .nome("Cliente_nome_mod")
+                .sobrenome("Cliente_sobrenome")
+                .dataNascimento(LocalDate.now())
+                .idade(19L)
+                .telefone("(37)020202020")
+                .cpf("73104520119")
+                .build();
+    }
+
+
 
 
 

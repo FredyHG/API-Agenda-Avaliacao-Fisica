@@ -36,6 +36,7 @@ class ClienteServiceTest {
     void setUp(){
         PageImpl<ClienteModel> clientePage = new PageImpl<>(List.of(CreateNewCliente.createValidClient()));
 
+
         BDDMockito.when(clienteRepositoryMock.findAll(ArgumentMatchers.any(PageRequest.class)))
                 .thenReturn(clientePage);
 
@@ -46,6 +47,9 @@ class ClienteServiceTest {
 
         BDDMockito.when(clienteRepositoryMock.findById(ArgumentMatchers.anyLong()))
                 .thenReturn(Optional.of(CreateNewCliente.createValidClient()));
+
+        BDDMockito.when(clienteRepositoryMock.findClientByNomeAndSobrenome(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
+                .thenReturn(List.of(CreateNewCliente.createValidClient()));
 
 
     }
@@ -115,13 +119,23 @@ class ClienteServiceTest {
     }
 
     @Test
-    @DisplayName("Should return a 'Cliente'")
-    public void should_return_a_Cliente() {
+    @DisplayName("Should return a 'Cliente' by ID")
+    public void should_return_a_Client_by_ID() {
         ClienteModel expectedCliente = CreateNewCliente.createValidClient();
 
         Optional<ClienteModel> cliente = clienteService.findById(1);
 
         Assertions.assertThat(cliente.get()).isNotNull().isEqualTo(expectedCliente);
+    }
+
+    @Test
+    @DisplayName("Should return a 'Cliente' by NomeAndSobrenome")
+    public void should_return_a_Client_by_nome_and_sobrenome() {
+        ClienteModel expectedCliente = CreateNewCliente.createValidClient();
+
+        List<ClienteModel> contentPageList = clienteService.findByNomeAndSobrenome("test", "test").getContent();
+
+        Assertions.assertThat(contentPageList.get(0)).isNotNull() .isEqualTo(expectedCliente);
     }
 
     @Test

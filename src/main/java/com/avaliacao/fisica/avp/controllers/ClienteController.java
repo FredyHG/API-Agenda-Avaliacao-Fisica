@@ -2,6 +2,7 @@ package com.avaliacao.fisica.avp.controllers;
 
 import com.avaliacao.fisica.avp.model.ClienteModel;
 import com.avaliacao.fisica.avp.requests.ClientePostRequest;
+import com.avaliacao.fisica.avp.requests.ClientePutRequest;
 import com.avaliacao.fisica.avp.services.ClienteService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class ClienteController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<Object> listAllClientes(Pageable pageable){
+    public ResponseEntity<Page<ClienteModel>> listAllClientes(Pageable pageable){
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.findAllClientPageable(pageable));
     }
 
@@ -72,7 +73,22 @@ public class ClienteController {
 
         clienteService.deleteCliente(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body("Cliente deleted successfully");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Cliente deleted successfully");
+
+    }
+
+    @PutMapping("/edit")
+    public ResponseEntity<Object> editCliente(@RequestBody ClientePutRequest cliente){
+
+        Optional<ClienteModel> clienteExists = clienteService.findById(cliente.getId());
+
+        if (clienteExists.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cliente not found");
+        }
+
+        clienteService.replace(cliente);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Cliente edited successfully");
 
     }
 

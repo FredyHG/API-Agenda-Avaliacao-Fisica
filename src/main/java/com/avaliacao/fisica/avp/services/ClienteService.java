@@ -5,6 +5,7 @@ import com.avaliacao.fisica.avp.mapper.ClienteMapper;
 import com.avaliacao.fisica.avp.model.ClienteModel;
 import com.avaliacao.fisica.avp.repositories.ClienteRepository;
 import com.avaliacao.fisica.avp.requests.ClientePostRequest;
+import com.avaliacao.fisica.avp.requests.ClientePutRequest;
 import com.avaliacao.fisica.avp.utils.TitleCase;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -44,7 +45,17 @@ public class ClienteService {
 
     }
 
-    @Transactional
+
+    public void replace(ClientePutRequest clientePutRequest){
+        ClienteModel savedCliente = findByIdOrThrowBadRequestException(clientePutRequest.getId());
+
+        ClienteModel cliente = ClienteMapper.INSTANCE.toCliente(clientePutRequest);
+        cliente.setId(savedCliente.getId());
+
+        clienteRepository.save(cliente);
+
+    }
+
     public void deleteCliente(long id) {
 
         clienteRepository.delete(findByIdOrThrowBadRequestException(id));
