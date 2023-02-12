@@ -22,18 +22,6 @@ public class ClienteController {
 
     private final ClienteService clienteService;
 
-    @PostMapping("/new")
-    public ResponseEntity<Object> createNewCliente(@RequestBody @Valid ClientePostRequest cliente){
-
-        Optional<ClienteModel> clienteSaved = clienteService.saveNewCliente(cliente);
-
-        if(clienteSaved.isEmpty()){
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Cliente already exists");
-        }
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(clienteSaved);
-
-    }
 
     @GetMapping("/list")
     public ResponseEntity<Page<ClienteModel>> listAllClientes(Pageable pageable){
@@ -43,7 +31,7 @@ public class ClienteController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<Object> findByIdNOn(@PathVariable long id){
+    public ResponseEntity<Object> findById(@PathVariable long id){
         Optional<ClienteModel> byId = clienteService.findById(id);
         if(byId.isPresent()){
             return ResponseEntity.status(HttpStatus.OK).body(byId.get());
@@ -93,6 +81,20 @@ public class ClienteController {
     }
 
 
+
+
+    @PostMapping("/new")
+    public ResponseEntity<Object> createNewCliente(@RequestBody @Valid ClientePostRequest cliente){
+
+        Optional<ClienteModel> clienteSaved = clienteService.saveNewCliente(cliente);
+
+        if(clienteSaved.isEmpty()){
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Cliente already exists");
+        }
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(clienteSaved);
+
+    }
 
 
 

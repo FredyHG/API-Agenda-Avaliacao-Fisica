@@ -78,7 +78,7 @@ class ClienteControllerTest {
     public void should_return_a_Client_by_ID() {
         ClienteModel expectedCliente = CreateNewCliente.createValidClient();
 
-        Object cliente = clienteController.findByIdNOn(1).getBody();
+        Object cliente = clienteController.findById(1).getBody();
 
         Assertions.assertThat(cliente).isNotNull().isEqualTo(expectedCliente);
     }
