@@ -84,4 +84,10 @@ public class ClienteService {
 
         return clienteRepository.findClientByNomeAndSobrenome(nome, sobrenome);
     }
+
+    public Optional<ClienteModel> findByCpf(String cpf) {
+
+        return clienteRepository.findByCpf(cpf);
+
+    }
 }
