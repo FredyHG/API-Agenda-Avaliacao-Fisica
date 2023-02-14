@@ -29,14 +29,12 @@ public class ClienteService {
     @Transactional
     public Optional<ClienteModel> saveNewCliente(ClientePostRequest cliente){
 
-
         Optional<ClienteModel> clienteToBeSaved = Optional.of(ClienteMapper.INSTANCE.toCliente(cliente));
 
         clienteToBeSaved.get().setDataNascimento(Date.valueOf(cliente.getDataNascimento()));
 
-
-
         clienteToBeSaved.get().setNome(TitleCase.convertToTitleCaseIteratingChars(clienteToBeSaved.get().getNome()));
+
         clienteToBeSaved.get().setSobrenome(TitleCase.convertToTitleCaseIteratingChars(clienteToBeSaved.get().getSobrenome()));
 
         ClienteModel savedCliente = clienteRepository.save(clienteToBeSaved.get());

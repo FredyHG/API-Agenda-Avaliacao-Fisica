@@ -4,7 +4,7 @@ import com.avaliacao.fisica.avp.exception.BadRequestException;
 import com.avaliacao.fisica.avp.model.ClienteModel;
 import com.avaliacao.fisica.avp.repositories.ClienteRepository;
 import com.avaliacao.fisica.avp.requests.ClientePostRequest;
-import com.avaliacao.fisica.avp.utils.CreateNewCliente;
+import com.avaliacao.fisica.avp.utils.ClienteCreator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -34,22 +34,22 @@ class ClienteServiceTest {
 
     @BeforeEach
     void setUp(){
-        PageImpl<ClienteModel> clientePage = new PageImpl<>(List.of(CreateNewCliente.createValidClient()));
+        PageImpl<ClienteModel> clientePage = new PageImpl<>(List.of(ClienteCreator.createValidClient()));
 
 
         BDDMockito.when(clienteRepositoryMock.findAll(ArgumentMatchers.any(PageRequest.class)))
                 .thenReturn(clientePage);
 
         BDDMockito.when(clienteRepositoryMock.save(ArgumentMatchers.any(ClienteModel.class)))
-                .thenReturn(CreateNewCliente.createValidClient());
+                .thenReturn(ClienteCreator.createValidClient());
 
         BDDMockito.doNothing().when(clienteRepositoryMock).delete(ArgumentMatchers.any(ClienteModel.class));
 
         BDDMockito.when(clienteRepositoryMock.findById(ArgumentMatchers.anyLong()))
-                .thenReturn(Optional.of(CreateNewCliente.createValidClient()));
+                .thenReturn(Optional.of(ClienteCreator.createValidClient()));
 
         BDDMockito.when(clienteRepositoryMock.findClientByNomeAndSobrenome(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
-                .thenReturn(List.of(CreateNewCliente.createValidClient()));
+                .thenReturn(List.of(ClienteCreator.createValidClient()));
 
 
     }
@@ -57,11 +57,11 @@ class ClienteServiceTest {
     @Test
     @DisplayName("Should be able to create Cliente")
     public void should_be_able_to_create_cliente(){
-        ClientePostRequest clientToBeSaved = CreateNewCliente.createValidClientPostRequest();
+        ClientePostRequest clientToBeSaved = ClienteCreator.createValidClientPostRequest();
 
         Optional<ClienteModel> savedCliente = clienteService.saveNewCliente(clientToBeSaved);
 
-        Assertions.assertThat(savedCliente.get()).isNotNull().isEqualTo(CreateNewCliente.createValidClient());
+        Assertions.assertThat(savedCliente.get()).isNotNull().isEqualTo(ClienteCreator.createValidClient());
     }
 
     @Test
@@ -85,7 +85,7 @@ class ClienteServiceTest {
     @Test
     @DisplayName("Should return a pageable list of 'Clientes'")
     public void should_return_a_pageable_list_of_Cliente(){
-        String expectedName = CreateNewCliente.createValidClient().getNome();
+        String expectedName = ClienteCreator.createValidClient().getNome();
 
         Page<ClienteModel> clientePage = clienteService.findAllClientPageable(PageRequest.of(1,1));
 
@@ -102,12 +102,12 @@ class ClienteServiceTest {
     @DisplayName("Should return a list of 'Cliente'")
     public void should_return_a_list_of_Cliente(){
 
-        List<ClienteModel> listOfCliente = List.of(CreateNewCliente.createValidClient());
+        List<ClienteModel> listOfCliente = List.of(ClienteCreator.createValidClient());
 
         BDDMockito.when(clienteRepositoryMock.findAll())
                 .thenReturn(listOfCliente);
 
-        String expectedName = CreateNewCliente.createValidClient().getNome();
+        String expectedName = ClienteCreator.createValidClient().getNome();
 
         List<ClienteModel> clienteList = clienteService.findAllCliente();
 
@@ -121,7 +121,7 @@ class ClienteServiceTest {
     @Test
     @DisplayName("Should return a 'Cliente' by ID")
     public void should_return_a_Client_by_ID() {
-        ClienteModel expectedCliente = CreateNewCliente.createValidClient();
+        ClienteModel expectedCliente = ClienteCreator.createValidClient();
 
         Optional<ClienteModel> cliente = clienteService.findById(1);
 
@@ -131,7 +131,7 @@ class ClienteServiceTest {
     @Test
     @DisplayName("Should return a 'Cliente' by NomeAndSobrenome")
     public void should_return_a_Client_by_nome_and_sobrenome() {
-        ClienteModel expectedCliente = CreateNewCliente.createValidClient();
+        ClienteModel expectedCliente = ClienteCreator.createValidClient();
 
         List<ClienteModel> contentPageList = clienteService.findByNomeAndSobrenome("test", "test");
 
@@ -141,7 +141,7 @@ class ClienteServiceTest {
     @Test
     public void should_return_a_edited_Cliente(){
 
-        Assertions.assertThatCode(() -> clienteService.replace(CreateNewCliente.createValidPutRequest()))
+        Assertions.assertThatCode(() -> clienteService.replace(ClienteCreator.createValidPutRequest()))
                 .doesNotThrowAnyException();
 
 

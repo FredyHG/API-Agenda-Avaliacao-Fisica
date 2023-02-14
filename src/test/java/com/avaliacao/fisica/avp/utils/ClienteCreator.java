@@ -3,13 +3,12 @@ package com.avaliacao.fisica.avp.utils;
 import com.avaliacao.fisica.avp.model.ClienteModel;
 import com.avaliacao.fisica.avp.requests.ClientePostRequest;
 import com.avaliacao.fisica.avp.requests.ClientePutRequest;
-import org.springframework.data.domain.Page;
 
 import java.sql.Date;
 import java.time.LocalDate;
 
 
-public class CreateNewCliente{
+public class ClienteCreator {
 
     public static ClienteModel createValidClient(){
         return ClienteModel.builder()

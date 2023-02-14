@@ -87,11 +87,15 @@ public class ClienteController {
     @PostMapping("/new")
     public ResponseEntity<Object> createNewCliente(@RequestBody @Valid ClientePostRequest cliente){
 
-        Optional<ClienteModel> clienteSaved = clienteService.saveNewCliente(cliente);
 
-        if(clienteSaved.isEmpty()){
+        Optional<ClienteModel> clienteExists = clienteService.findByCpf(cliente.getCpf());
+
+        if(clienteExists.isPresent()){
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Cliente already exists");
         }
+
+        Optional<ClienteModel> clienteSaved = clienteService.saveNewCliente(cliente);
+
 
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteSaved);
 

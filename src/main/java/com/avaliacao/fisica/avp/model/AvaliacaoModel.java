@@ -17,7 +17,7 @@ public class AvaliacaoModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "datahora")
+    @Column(name = "datahora222")
     private Date dataHora;
 
     @Column(name = "status")

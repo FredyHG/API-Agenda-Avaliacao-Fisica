@@ -9,12 +9,11 @@ import lombok.NoArgsConstructor;
 import java.sql.Date;
 import java.time.LocalDate;
 
-@Entity
+@Entity(name = "cliente")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "cliente")
 public class ClienteModel {
 
      @Id

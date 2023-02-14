@@ -3,7 +3,7 @@ package com.avaliacao.fisica.avp.controllers;
 import com.avaliacao.fisica.avp.model.ClienteModel;
 import com.avaliacao.fisica.avp.requests.ClientePostRequest;
 import com.avaliacao.fisica.avp.services.ClienteService;
-import com.avaliacao.fisica.avp.utils.CreateNewCliente;
+import com.avaliacao.fisica.avp.utils.ClienteCreator;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -33,15 +33,15 @@ class ClienteControllerTest {
 
     @BeforeEach
     void setUp(){
-        PageImpl<ClienteModel> clientePage = new PageImpl<>(List.of(CreateNewCliente.createValidClient()));
+        PageImpl<ClienteModel> clientePage = new PageImpl<>(List.of(ClienteCreator.createValidClient()));
         BDDMockito.when(clienteServiceMock.findAllClientPageable(ArgumentMatchers.any()))
                 .thenReturn(clientePage);
 
         BDDMockito.when(clienteServiceMock.findById(ArgumentMatchers.anyLong()))
-                .thenReturn(Optional.of(CreateNewCliente.createValidClient()));
+                .thenReturn(Optional.of(ClienteCreator.createValidClient()));
 
         BDDMockito.when(clienteServiceMock.findById(ArgumentMatchers.anyLong()))
-                .thenReturn(Optional.of(CreateNewCliente.createValidClient()));
+                .thenReturn(Optional.of(ClienteCreator.createValidClient()));
 
         BDDMockito.when(clienteServiceMock.findByNomeAndSobrenome(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
                 .thenReturn(clientePage.stream().toList());
@@ -52,7 +52,7 @@ class ClienteControllerTest {
     @Test
     @DisplayName("Should return a pageable list of 'Clientes'")
     public void should_return_a_pageable_list_of_Cliente(){
-        String expectedName = CreateNewCliente.createValidClient().getNome();
+        String expectedName = ClienteCreator.createValidClient().getNome();
 
         Page<ClienteModel> clientePage = clienteController.listAllClientes(null).getBody();
 
@@ -68,7 +68,7 @@ class ClienteControllerTest {
     @Test
     public void should_return_a_edited_Cliente(){
 
-        Assertions.assertThatCode(() -> clienteServiceMock.replace(CreateNewCliente.createValidPutRequest()))
+        Assertions.assertThatCode(() -> clienteServiceMock.replace(ClienteCreator.createValidPutRequest()))
                 .doesNotThrowAnyException();
 
     }
@@ -76,7 +76,7 @@ class ClienteControllerTest {
     @Test
     @DisplayName("Should return a 'Cliente' by ID")
     public void should_return_a_Client_by_ID() {
-        ClienteModel expectedCliente = CreateNewCliente.createValidClient();
+        ClienteModel expectedCliente = ClienteCreator.createValidClient();
 
         Object cliente = clienteController.findById(1).getBody();
 
@@ -86,7 +86,7 @@ class ClienteControllerTest {
     @Test
     @DisplayName("Should return a 'Cliente' by NomeAndSobrenome")
     public void should_return_a_Client_by_nome_and_sobrenome() {
-        PageImpl<ClienteModel> clientePage = new PageImpl<>(List.of(CreateNewCliente.createValidClient()));
+        PageImpl<ClienteModel> clientePage = new PageImpl<>(List.of(ClienteCreator.createValidClient()));
 
         Object body = clienteController.findByName("test", "test").getBody();
 
@@ -105,7 +105,7 @@ class ClienteControllerTest {
     @Test
     @DisplayName("Should be able to create Cliente")
     public void should_be_able_to_create_cliente(){
-        ClientePostRequest clientToBeSaved = CreateNewCliente.createValidClientPostRequest();
+        ClientePostRequest clientToBeSaved = ClienteCreator.createValidClientPostRequest();
 
         String expectedBody = "Cliente already exists";
         Object body = clienteController.createNewCliente(clientToBeSaved).getBody();

@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.Optional;
 
 @Service
@@ -22,16 +23,24 @@ public class AvaliacaoService {
 
 
     @Transactional
-    public AvaliacaoModel saveNewAvaliacao(AvaliacaoPostRequest avaliacao){
+    public Optional<AvaliacaoModel> saveNewAvaliacao(AvaliacaoPostRequest avaliacao){
 
         Optional<AvaliacaoModel> avaliacaoToBeSaved = Optional.of(AvaliacaoMapper.INSTANCE.toAvaliacao(avaliacao));
 
         Optional<ClienteModel> cliente = clienteService.findByCpf(avaliacao.getCpf());
 
+
+        avaliacaoToBeSaved.get().setDataHora(Date.valueOf(avaliacao.getDataHora()));
+
         avaliacaoToBeSaved.get().setClientID(cliente.get().getId());
 
-        return avaliacaoRepository.save(avaliacaoToBeSaved.get());
+        AvaliacaoModel savedAvaliacao = avaliacaoRepository.save(avaliacaoToBeSaved.get());
+
+        return Optional.of(savedAvaliacao);
     }
 
 
+    public Optional<AvaliacaoModel> findByIdCliente(Long id) {
+        return avaliacaoRepository.findByCpf(id);
+    }
 }

@@ -4,9 +4,8 @@ import com.avaliacao.fisica.avp.model.ClienteModel;
 import com.avaliacao.fisica.avp.repositories.ClienteRepository;
 import com.avaliacao.fisica.avp.requests.ClientePostRequest;
 import com.avaliacao.fisica.avp.requests.ClientePutRequest;
-import com.avaliacao.fisica.avp.utils.CreateNewCliente;
+import com.avaliacao.fisica.avp.utils.ClienteCreator;
 import com.avaliacao.fisica.avp.wrapper.PageableResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,7 +23,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +46,7 @@ public class ClienteControllerIT {
     @DisplayName("Should return a pageable list of 'Clientes'")
     public void should_return_a_pageable_list_of_Cliente(){
 
-        ClienteModel savedCliente = clienteRepository.save(CreateNewCliente.createValidClient());
+        ClienteModel savedCliente = clienteRepository.save(ClienteCreator.createValidClient());
 
         String expectedName = savedCliente.getNome();
 
@@ -68,7 +66,7 @@ public class ClienteControllerIT {
     @Test
     @DisplayName("Should return a 'Cliente' by ID")
     public void should_Return_a_Cliente_by_id(){
-        ClienteModel savedCliente = clienteRepository.save(CreateNewCliente.createValidClient());
+        ClienteModel savedCliente = clienteRepository.save(ClienteCreator.createValidClient());
 
         long expectedId = savedCliente.getId();
 
@@ -90,7 +88,7 @@ public class ClienteControllerIT {
                 .queryParam("name", "Cliente_nome").queryParam("sobrenome", "Cliente_sobrenome").build().toUri();
 
 
-        ClienteModel clienteExpected = clienteRepository.save(CreateNewCliente.createValidClient());
+        ClienteModel clienteExpected = clienteRepository.save(ClienteCreator.createValidClient());
 
 
         List<ClienteModel> clienteList = testRestTemplate.exchange(uri, HttpMethod.GET, null, new ParameterizedTypeReference<List<ClienteModel>>() {}).getBody();
@@ -131,7 +129,7 @@ public class ClienteControllerIT {
     @Test
     @DisplayName("save returns Cliente when successful")
     void save_ReturnsCliente_WhenSuccessful(){
-        ClientePostRequest clientePostRequestBody = CreateNewCliente.createValidClientPostRequest();
+        ClientePostRequest clientePostRequestBody = ClienteCreator.createValidClientPostRequest();
 
         ResponseEntity<ClienteModel> cliente = testRestTemplate.postForEntity("/api/cliente/new", clientePostRequestBody, ClienteModel.class);
 
@@ -146,9 +144,9 @@ public class ClienteControllerIT {
     @DisplayName("Should_return_a_HttpStatusCode_204_NO_CONTENT_and_update_Cliente")
     public void should_return_a_HttpStatusCode_204_NO_CONTENT_and_update_cliente() {
 
-        ClienteModel cliente = clienteRepository.save(CreateNewCliente.createValidClient());
+        ClienteModel cliente = clienteRepository.save(ClienteCreator.createValidClient());
 
-        ClientePutRequest clienteToBeEdit = CreateNewCliente.createValidPutRequest();
+        ClientePutRequest clienteToBeEdit = ClienteCreator.createValidPutRequest();
 
         ResponseEntity<String> response = testRestTemplate.exchange("/api/cliente/edit", HttpMethod.PUT, new HttpEntity<>(clienteToBeEdit), String.class);
 
@@ -167,7 +165,7 @@ public class ClienteControllerIT {
 
         String url = "http://localhost:" + this.port + "/api/cliente/delete/1";
 
-        clienteRepository.save(CreateNewCliente.createValidClient());
+        clienteRepository.save(ClienteCreator.createValidClient());
 
         ResponseEntity<String> response = testRestTemplate.exchange(url, HttpMethod.DELETE, null, String.class);
 
