@@ -133,7 +133,7 @@ class ClienteServiceTest {
     public void should_return_a_Client_by_nome_and_sobrenome() {
         ClienteModel expectedCliente = CreateNewCliente.createValidClient();
 
-        List<ClienteModel> contentPageList = clienteService.findByNomeAndSobrenome("test", "test").getContent();
+        List<ClienteModel> contentPageList = clienteService.findByNomeAndSobrenome("test", "test");
 
         Assertions.assertThat(contentPageList.get(0)).isNotNull() .isEqualTo(expectedCliente);
     }

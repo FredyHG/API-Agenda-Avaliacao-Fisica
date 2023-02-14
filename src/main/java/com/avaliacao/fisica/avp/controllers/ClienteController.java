@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,7 +26,7 @@ public class ClienteController {
 
     @GetMapping("/list")
     public ResponseEntity<Page<ClienteModel>> listAllClientes(Pageable pageable){
-        return ResponseEntity.status(HttpStatus.CREATED).body(clienteService.findAllClientPageable(pageable));
+        return ResponseEntity.status(HttpStatus.OK).body(clienteService.findAllClientPageable(pageable));
     }
 
 
@@ -40,9 +41,9 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cliente not found");
     }
 
-    @GetMapping("/{nome}/{sobrenome}")
-    public ResponseEntity<Object> findByName(@PathVariable String nome, @PathVariable String sobrenome){
-        Page<ClienteModel> cliente = clienteService.findByNomeAndSobrenome(nome, sobrenome);
+    @GetMapping("/find")
+    public ResponseEntity<Object> findByName(@RequestParam(value = "name") String nome, @RequestParam(value = "sobrenome") String sobrenome){
+       List<ClienteModel> cliente = clienteService.findByNomeAndSobrenome(nome, sobrenome);
 
         if(cliente.isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cliente not found");
@@ -95,7 +96,6 @@ public class ClienteController {
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteSaved);
 
     }
-
 
 
 }

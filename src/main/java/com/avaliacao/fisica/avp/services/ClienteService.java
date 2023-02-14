@@ -80,10 +80,8 @@ public class ClienteService {
         return clienteRepository.findById(id);
     }
 
-    public Page<ClienteModel> findByNomeAndSobrenome(String nome, String sobrenome){
+    public List<ClienteModel> findByNomeAndSobrenome(String nome, String sobrenome){
 
-        PageImpl<ClienteModel> clientePage = new PageImpl<>(clienteRepository.findClientByNomeAndSobrenome(nome, sobrenome));
-
-        return clientePage;
+        return clienteRepository.findClientByNomeAndSobrenome(nome, sobrenome);
     }
 }

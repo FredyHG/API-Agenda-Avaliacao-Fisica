@@ -44,7 +44,7 @@ class ClienteControllerTest {
                 .thenReturn(Optional.of(CreateNewCliente.createValidClient()));
 
         BDDMockito.when(clienteServiceMock.findByNomeAndSobrenome(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
-                .thenReturn(clientePage);
+                .thenReturn(clientePage.stream().toList());
     }
 
 
@@ -112,6 +112,8 @@ class ClienteControllerTest {
 
         Assertions.assertThat(Objects.equals(body, expectedBody));
     }
+
+
 
 
 
