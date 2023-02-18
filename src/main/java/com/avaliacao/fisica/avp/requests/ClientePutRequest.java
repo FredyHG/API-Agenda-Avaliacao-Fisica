@@ -14,8 +14,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class ClientePutRequest {
 
-    private Long id;
-
     private String nome;
 
     private String sobrenome;

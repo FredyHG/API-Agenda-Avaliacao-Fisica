@@ -19,6 +19,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
@@ -51,12 +55,17 @@ class AvaliacaoServiceTest {
 
         clienteService.saveNewCliente(ClienteCreator.createValidClientPostRequest());
 
+        DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now());
+
+
         Optional<AvaliacaoModel> savedAvaliacao = avaliacaoService.saveNewAvaliacao(avaliacaoToBeSaved);
 
         System.out.println(savedAvaliacao);
 
         Assertions.assertThat(savedAvaliacao.get()).isNotNull().isEqualTo(AvaliacaoCreator.createValidAvaliacao());
     }
+
+
 
 
 }

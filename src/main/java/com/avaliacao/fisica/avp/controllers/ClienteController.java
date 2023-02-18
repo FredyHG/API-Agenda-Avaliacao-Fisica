@@ -13,8 +13,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/api/cliente")
@@ -23,13 +28,10 @@ public class ClienteController {
 
     private final ClienteService clienteService;
 
-
     @GetMapping("/list")
     public ResponseEntity<Page<ClienteModel>> listAllClientes(Pageable pageable){
         return ResponseEntity.status(HttpStatus.OK).body(clienteService.findAllClientPageable(pageable));
     }
-
-
 
     @GetMapping("/{id}")
     public ResponseEntity<Object> findById(@PathVariable long id){
@@ -69,7 +71,7 @@ public class ClienteController {
     @PutMapping("/edit")
     public ResponseEntity<Object> editCliente(@RequestBody ClientePutRequest cliente){
 
-        Optional<ClienteModel> clienteExists = clienteService.findById(cliente.getId());
+        Optional<ClienteModel> clienteExists = clienteService.findByCpf(cliente.getCpf());
 
         if (clienteExists.isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cliente not found");
@@ -81,12 +83,19 @@ public class ClienteController {
 
     }
 
-
-
-
     @PostMapping("/new")
     public ResponseEntity<Object> createNewCliente(@RequestBody @Valid ClientePostRequest cliente){
 
+        Pattern pattern = Pattern.compile("^[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}\\-[0-9]{2}$");
+        Matcher matcher = pattern.matcher(cliente.getCpf());
+
+        if(!matcher.find()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF is not valid");
+        }
+
+        if (cliente.getDataNascimento().isAfter(LocalDate.now())) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid birthdate, check the parameters and try again");
+        }
 
         Optional<ClienteModel> clienteExists = clienteService.findByCpf(cliente.getCpf());
 
@@ -96,10 +105,10 @@ public class ClienteController {
 
         Optional<ClienteModel> clienteSaved = clienteService.saveNewCliente(cliente);
 
-
         return ResponseEntity.status(HttpStatus.CREATED).body(clienteSaved);
 
     }
+
 
 
 }

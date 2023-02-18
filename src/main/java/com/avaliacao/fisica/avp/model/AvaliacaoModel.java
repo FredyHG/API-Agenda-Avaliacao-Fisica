@@ -3,7 +3,7 @@ package com.avaliacao.fisica.avp.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Date;
+import java.util.Date;
 
 
 @Entity(name = "avaliacao")
@@ -17,7 +17,7 @@ public class AvaliacaoModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "datahora222")
+    @Column(name = "datahora")
     private Date dataHora;
 
     @Column(name = "status")
@@ -29,7 +29,7 @@ public class AvaliacaoModel {
     @Column(name = "limitacoesfisica")
     private String limitacoesFisicas;
 
-    @Column(name = "clientId")
-    private Long clientID;
+    @Column(name = "clienteid")
+    private Long clienteId;
 
 }

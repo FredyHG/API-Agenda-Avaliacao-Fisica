@@ -9,7 +9,9 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Optional;
 
 @Service
@@ -30,9 +32,9 @@ public class AvaliacaoService {
         Optional<ClienteModel> cliente = clienteService.findByCpf(avaliacao.getCpf());
 
 
-        avaliacaoToBeSaved.get().setDataHora(Date.valueOf(avaliacao.getDataHora()));
+        avaliacaoToBeSaved.get().setDataHora(Date.from(avaliacao.getDataHora().atZone(ZoneId.systemDefault()).toInstant()));
 
-        avaliacaoToBeSaved.get().setClientID(cliente.get().getId());
+        avaliacaoToBeSaved.get().setClienteId(cliente.get().getId());
 
         AvaliacaoModel savedAvaliacao = avaliacaoRepository.save(avaliacaoToBeSaved.get());
 

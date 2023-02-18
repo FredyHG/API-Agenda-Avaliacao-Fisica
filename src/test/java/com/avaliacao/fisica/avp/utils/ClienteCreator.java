@@ -17,7 +17,7 @@ public class ClienteCreator {
                 .dataNascimento(Date.valueOf(LocalDate.now()))
                 .idade(19L)
                 .telefone("(37)020202020")
-                .cpf("73104520119")
+                .cpf("123.123.123-12")
                 .build();
 
     }
@@ -29,7 +29,7 @@ public class ClienteCreator {
                 .dataNascimento(LocalDate.now())
                 .idade(19L)
                 .telefone("(37)020202020")
-                .cpf("73104520119")
+                .cpf("123.123.123-12")
                 .build();
 
     }
