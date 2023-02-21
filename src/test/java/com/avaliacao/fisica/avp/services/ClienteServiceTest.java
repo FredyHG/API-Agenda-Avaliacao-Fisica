@@ -48,6 +48,9 @@ class ClienteServiceTest {
         BDDMockito.when(clienteRepositoryMock.findById(ArgumentMatchers.anyLong()))
                 .thenReturn(Optional.of(ClienteCreator.createValidClient()));
 
+        BDDMockito.when(clienteRepositoryMock.findByCpf(ArgumentMatchers.anyString()))
+                .thenReturn(Optional.of(ClienteCreator.createValidClient()));
+
         BDDMockito.when(clienteRepositoryMock.findClientByNomeAndSobrenome(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
                 .thenReturn(List.of(ClienteCreator.createValidClient()));
 
@@ -65,13 +68,13 @@ class ClienteServiceTest {
     }
 
     @Test
-    @DisplayName("Find by id throws BadRequestException when Cliente is not found")
-    public void findById_ThrowsBadRequestException_WhenClienteIsNotFound(){
-        BDDMockito.when(clienteRepositoryMock.findById(ArgumentMatchers.anyLong()))
+    @DisplayName("Find by CPF throws BadRequestException when Cliente is not found")
+    public void findByCPF_ThrowsBadRequestException_WhenClienteIsNotFound(){
+        BDDMockito.when(clienteRepositoryMock.findByCpf(ArgumentMatchers.anyString()))
                 .thenReturn(Optional.empty());
 
         Assertions.assertThatExceptionOfType(BadRequestException.class)
-                .isThrownBy(() -> clienteService.findByIdOrThrowBadRequestException(1));
+                .isThrownBy(() -> clienteService.findByCPFOrThrowBadRequestException("string"));
     }
 
     @Test

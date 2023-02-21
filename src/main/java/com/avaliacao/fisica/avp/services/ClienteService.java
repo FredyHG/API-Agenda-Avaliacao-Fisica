@@ -45,7 +45,7 @@ public class ClienteService {
 
 
     public void replace(ClientePutRequest clientePutRequest){
-        ClienteModel savedCliente = findByIdOrThrowBadRequestException(clientePutRequest.getId());
+        ClienteModel savedCliente = findByCPFOrThrowBadRequestException(clientePutRequest.getCpf());
 
         ClienteModel cliente = ClienteMapper.INSTANCE.toCliente(clientePutRequest);
         cliente.setId(savedCliente.getId());
@@ -54,16 +54,22 @@ public class ClienteService {
 
     }
 
+    public void deleteClienteByCPF(String cpf) {
+
+        clienteRepository.delete(findByCPFOrThrowBadRequestException(cpf));
+
+    }
+
     public void deleteCliente(long id) {
 
-        clienteRepository.delete(findByIdOrThrowBadRequestException(id));
+        clienteRepository.delete(findById(id).orElseThrow(() -> new BadRequestException("Cliente not found")));
 
     }
 
 
 
-    public ClienteModel findByIdOrThrowBadRequestException(long id) {
-        return clienteRepository.findById(id).orElseThrow(() -> new BadRequestException("Cliente not Found"));
+    public ClienteModel findByCPFOrThrowBadRequestException(String cpf) {
+        return clienteRepository.findByCpf(cpf).orElseThrow(() -> new BadRequestException("Cliente not Found"));
     }
 
     public Page<ClienteModel> findAllClientPageable(Pageable page){

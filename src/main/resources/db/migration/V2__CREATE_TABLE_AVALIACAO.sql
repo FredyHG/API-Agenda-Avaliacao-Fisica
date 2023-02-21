@@ -1,6 +1,6 @@
 CREATE TABLE avaliacao(
     id SERIAL primary key,
-    datahora date,
+    datahora timestamp,
     status boolean,
     alergias varchar(130),
     limitacoesfisica varchar(130),

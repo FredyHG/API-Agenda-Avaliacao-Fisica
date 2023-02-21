@@ -1,5 +1,6 @@
 package com.avaliacao.fisica.avp.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -27,6 +28,7 @@ public class ClienteModel {
      private String sobrenome;
 
      @Column(name = "nascimentodate")
+     @JsonFormat(pattern="dd/MM/yyyy")
      private Date dataNascimento;
 
      @Column(name = "idade")

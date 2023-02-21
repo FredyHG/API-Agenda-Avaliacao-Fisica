@@ -36,13 +36,12 @@ public class ClienteCreator {
 
     public static ClientePutRequest createValidPutRequest(){
         return ClientePutRequest.builder()
-                .id(1L)
                 .nome("Cliente_nome_mod")
                 .sobrenome("Cliente_sobrenome")
                 .dataNascimento(LocalDate.now())
                 .idade(19L)
                 .telefone("(37)020202020")
-                .cpf("73104520119")
+                .cpf("123.123.123-12")
                 .build();
     }
 

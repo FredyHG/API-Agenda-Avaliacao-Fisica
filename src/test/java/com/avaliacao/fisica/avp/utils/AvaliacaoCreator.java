@@ -12,7 +12,7 @@ public class AvaliacaoCreator {
     public static AvaliacaoModel createValidAvaliacao(){
         return AvaliacaoModel.builder()
                 .alergias("Pelos")
-                .dataHora(Date.valueOf(LocalDate.now()))
+                .dataHora(LocalDateTime.now())
                 .status(false)
                 .clienteId(1L)
                 .limitacoesFisicas("Dor no joelho")

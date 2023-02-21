@@ -55,12 +55,9 @@ class AvaliacaoServiceTest {
 
         clienteService.saveNewCliente(ClienteCreator.createValidClientPostRequest());
 
-        DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss").format(LocalDateTime.now());
-
 
         Optional<AvaliacaoModel> savedAvaliacao = avaliacaoService.saveNewAvaliacao(avaliacaoToBeSaved);
 
-        System.out.println(savedAvaliacao);
 
         Assertions.assertThat(savedAvaliacao.get()).isNotNull().isEqualTo(AvaliacaoCreator.createValidAvaliacao());
     }
