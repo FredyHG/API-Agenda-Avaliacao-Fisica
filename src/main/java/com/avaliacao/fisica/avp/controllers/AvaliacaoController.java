@@ -31,7 +31,7 @@ public class AvaliacaoController {
 
 
     @PostMapping("new")
-    public ResponseEntity<Object> createNewAvaliacao(@RequestBody @Valid AvaliacaoPostRequest avaliacao) {
+    public ResponseEntity<String> createNewAvaliacao(@RequestBody @Valid AvaliacaoPostRequest avaliacao) {
 
 
         if (avaliacao.getDataHora().isBefore(LocalDateTime.now())) {
@@ -57,13 +57,15 @@ public class AvaliacaoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cliente is already registered in a pending avaliação!");
         }
 
-        Optional<AvaliacaoModel> savedAvaliacao = avaliacaoService.saveNewAvaliacao(avaliacao);
+        avaliacaoService.saveNewAvaliacao(avaliacao);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedAvaliacao);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Avaliacao created successfully");
     }
 
     @GetMapping("list")
     public ResponseEntity<Page<AvaliacaoGetRequest>> listAllAvaliacoes(Pageable pageable){
         return ResponseEntity.status(HttpStatus.OK).body(avaliacaoService.findAllAvaliacoesPageable(pageable));
     }
+
+
 }

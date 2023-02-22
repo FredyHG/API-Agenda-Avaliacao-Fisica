@@ -84,7 +84,7 @@ public class ClienteController {
     }
 
     @PostMapping("/new")
-    public ResponseEntity<Object> createNewCliente(@RequestBody @Valid ClientePostRequest cliente){
+    public ResponseEntity<String> createNewCliente(@RequestBody @Valid ClientePostRequest cliente){
 
         Pattern pattern = Pattern.compile("^[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}\\-[0-9]{2}$");
         Matcher matcher = pattern.matcher(cliente.getCpf());
@@ -103,9 +103,9 @@ public class ClienteController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body("Cliente already exists");
         }
 
-        Optional<ClienteModel> clienteSaved = clienteService.saveNewCliente(cliente);
+        clienteService.saveNewCliente(cliente);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(clienteSaved);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Cliente created successfully");
 
     }
 

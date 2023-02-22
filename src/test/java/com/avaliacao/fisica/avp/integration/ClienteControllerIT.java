@@ -130,13 +130,14 @@ public class ClienteControllerIT {
     @DisplayName("save returns Cliente when successful")
     void save_ReturnsCliente_WhenSuccessful(){
         ClientePostRequest clientePostRequestBody = ClienteCreator.createValidClientPostRequest();
+        String expectedBody = "Cliente created successfully";
 
-        ResponseEntity<ClienteModel> cliente = testRestTemplate.postForEntity("/api/cliente/new", clientePostRequestBody, ClienteModel.class);
+        ResponseEntity<String> cliente = testRestTemplate.postForEntity("/api/cliente/new", clientePostRequestBody, String.class);
 
         Assertions.assertThat(cliente).isNotNull();
         Assertions.assertThat(cliente.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         Assertions.assertThat(cliente.getBody()).isNotNull();
-        Assertions.assertThat(cliente.getBody().getId()).isNotNull();
+        Assertions.assertThat(cliente.getBody()).isEqualTo(expectedBody);
 
     }
 

@@ -45,6 +45,7 @@ class ClienteControllerTest {
 
         BDDMockito.when(clienteServiceMock.findByNomeAndSobrenome(ArgumentMatchers.anyString(), ArgumentMatchers.anyString()))
                 .thenReturn(clientePage.stream().toList());
+
     }
 
 
@@ -107,15 +108,11 @@ class ClienteControllerTest {
     public void should_be_able_to_create_cliente(){
         ClientePostRequest clientToBeSaved = ClienteCreator.createValidClientPostRequest();
 
-        String expectedBody = "Cliente already exists";
-        Object body = clienteController.createNewCliente(clientToBeSaved).getBody();
+        String expected = "Cliente created successfully";
+        String expectedBody  = clienteController.createNewCliente(clientToBeSaved).getBody();
 
-        Assertions.assertThat(Objects.equals(body, expectedBody));
+        Assertions.assertThat(expected).isEqualTo(expectedBody);
     }
-
-
-
-
 
 
 }
