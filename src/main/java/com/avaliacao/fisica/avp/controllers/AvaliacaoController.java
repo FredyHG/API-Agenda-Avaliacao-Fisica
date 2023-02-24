@@ -67,5 +67,30 @@ public class AvaliacaoController {
         return ResponseEntity.status(HttpStatus.OK).body(avaliacaoService.findAllAvaliacoesPageable(pageable));
     }
 
+    @GetMapping("find")
+    public ResponseEntity<Object> findByCpf(@RequestParam(value = "cpf") String cpf){
+
+        Pattern pattern = Pattern.compile("^[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}\\-[0-9]{2}$");
+        Matcher matcher = pattern.matcher(cpf);
+
+        if(!matcher.find()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF is not valid");
+        }
+
+        Optional<ClienteModel> cliente = clienteService.findByCpf(cpf);
+
+        if(cliente.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cliente not exists!");
+        }
+
+        Optional<AvaliacaoGetRequest> avaliacaoExists = avaliacaoService.findByIdClienteDTO(cliente.get().getId());
+
+        if(avaliacaoExists.isEmpty()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Avaliacao not found");
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(avaliacaoExists.get());
+    }
+
 
 }

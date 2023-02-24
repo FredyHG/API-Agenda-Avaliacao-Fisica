@@ -7,7 +7,9 @@ import com.avaliacao.fisica.avp.requests.AvaliacaoGetRequest;
 import com.avaliacao.fisica.avp.requests.AvaliacaoPostRequest;
 import com.avaliacao.fisica.avp.utils.AvaliacaoCreator;
 import com.avaliacao.fisica.avp.utils.ClienteCreator;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.assertj.core.api.Assertions;
+import org.checkerframework.checker.nullness.Opt;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -51,6 +53,9 @@ class AvaliacaoServiceTest {
         BDDMockito.when(avaliacaoRepositoryMock.save(ArgumentMatchers.any(AvaliacaoModel.class)))
                 .thenReturn(AvaliacaoCreator.createValidAvaliacao());
 
+        BDDMockito.when(avaliacaoRepositoryMock.findByClienteId(ArgumentMatchers.anyLong()))
+                        .thenReturn(Optional.of(AvaliacaoCreator.createValidAvaliacao()));
+
         BDDMockito.when(clienteService.findByCpf(ArgumentMatchers.any()))
                 .thenReturn(Optional.of(ClienteCreator.createValidClient()));
 
@@ -87,6 +92,35 @@ class AvaliacaoServiceTest {
 
         Assertions.assertThat(avaliacaoPage.toList().get(0).getAlergias()).isEqualTo(expectedAlergias);
     }
+
+    @Test
+    @DisplayName("Should return a 'Avaliacao' by Cliente id")
+    public void should_return_a_Avaliacao_by_Cliente_Id(){
+        AvaliacaoModel expectedAvaliacao = AvaliacaoCreator.createValidAvaliacao();
+
+        Optional<AvaliacaoModel> avaliacao = avaliacaoService.findByIdCliente(1L);
+
+        Assertions.assertThat(avaliacao).isNotEmpty();
+
+        Assertions.assertThat(avaliacao.get().getClienteId()).isEqualTo(expectedAvaliacao.getClienteId());
+    }
+
+    @Test
+    @DisplayName("Should return a 'AvaliacaoDTO' by Cliente id")
+    public void should_return_a_AvaliacaoDTO_by_Cliente_Id(){
+
+        AvaliacaoGetRequest expectedAvaliacao = AvaliacaoCreator.createValidAvaliacaoGetRequest();
+
+        Optional<AvaliacaoGetRequest> avaliacao = avaliacaoService.findByIdClienteDTO(1L);
+
+        Assertions.assertThat(avaliacao).isNotEmpty();
+
+        Assertions.assertThat(avaliacao.get().getLimitacoesFisicas()).isEqualTo(expectedAvaliacao.getLimitacoesFisicas());
+
+    }
+
+
+
 
 
 

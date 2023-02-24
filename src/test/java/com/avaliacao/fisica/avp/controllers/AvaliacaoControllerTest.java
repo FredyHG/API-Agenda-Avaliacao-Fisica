@@ -19,6 +19,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
@@ -43,6 +46,9 @@ class AvaliacaoControllerTest {
 
         BDDMockito.when(avaliacaoServiceMock.findAllAvaliacoesPageable(ArgumentMatchers.any()))
                 .thenReturn(avaliacaoPage);
+
+        BDDMockito.when(avaliacaoServiceMock.findByIdClienteDTO(ArgumentMatchers.anyLong()))
+                        .thenReturn(Optional.of(AvaliacaoCreator.createValidAvaliacaoGetRequest()));
 
         BDDMockito.when(clienteServiceMock.findByCpf(ArgumentMatchers.anyString()))
                 .thenReturn(Optional.of(ClienteCreator.createValidClient()));
@@ -73,5 +79,22 @@ class AvaliacaoControllerTest {
         String expectedBody  = avaliacaoController.createNewAvaliacao(avaliacaoToBeSaved).getBody();
 
         Assertions.assertThat(expectedBody).isEqualTo(expectedString);
+    }
+
+    @Test
+    @DisplayName("Should return a 'AvaliacaoDTO' by Cliente id")
+    public void should_return_a_AvaliacaoDTO_by_Cliente_Id(){
+
+        ClienteModel cliente = ClienteCreator.createValidClient();
+        cliente.setId(1L);
+
+        BDDMockito.when(clienteServiceMock.findByCpf(ArgumentMatchers.anyString()))
+                .thenReturn(Optional.of(cliente));
+
+
+        ResponseEntity<Object> bodyAvaliacao = avaliacaoController.findByCpf("123.123.123-12");
+
+        Assertions.assertThat(bodyAvaliacao.getStatusCode()).isEqualTo(HttpStatus.OK);
+
     }
 }

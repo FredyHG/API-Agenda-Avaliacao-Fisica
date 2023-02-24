@@ -50,7 +50,13 @@ public class AvaliacaoService {
 
 
     public Optional<AvaliacaoModel> findByIdCliente(Long id) {
-        return avaliacaoRepository.findByCpf(id);
+        return avaliacaoRepository.findByClienteId(id);
+    }
+
+    public Optional<AvaliacaoGetRequest> findByIdClienteDTO(Long id) {
+
+        AvaliacaoGetRequest avaliacao = AvaliacaoGetRequestMapper.INSTANCE.toAvaliacaoGetRequest(avaliacaoRepository.findByClienteId(id).get(), clienteService);
+        return Optional.of(avaliacao);
     }
 
     public Page<AvaliacaoGetRequest> findAllAvaliacoesPageable(Pageable pageable) {

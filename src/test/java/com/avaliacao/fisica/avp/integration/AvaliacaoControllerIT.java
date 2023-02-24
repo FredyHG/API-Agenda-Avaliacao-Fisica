@@ -5,6 +5,8 @@ import com.avaliacao.fisica.avp.model.ClienteModel;
 import com.avaliacao.fisica.avp.repositories.AvaliacaoRepository;
 import com.avaliacao.fisica.avp.repositories.ClienteRepository;
 import com.avaliacao.fisica.avp.requests.AvaliacaoGetRequest;
+import com.avaliacao.fisica.avp.requests.AvaliacaoPostRequest;
+import com.avaliacao.fisica.avp.requests.ClientePostRequest;
 import com.avaliacao.fisica.avp.utils.AvaliacaoCreator;
 import com.avaliacao.fisica.avp.utils.ClienteCreator;
 import com.avaliacao.fisica.avp.wrapper.PageableResponse;
@@ -18,6 +20,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -59,4 +63,26 @@ public class AvaliacaoControllerIT {
 
         Assertions.assertThat(avaliacaoGetPage.toList().get(0).getCliente().getId()).isEqualTo(expectedId);
     }
+
+    @Test
+    @DisplayName("save returns Cliente when successful")
+    void save_ReturnsCliente_WhenSuccessful(){
+
+        clienteRepository.save(ClienteCreator.createValidClient());
+
+        AvaliacaoPostRequest avaliacaoPostRequest = AvaliacaoCreator.createValidAvaliacaoPostRequest();
+        String expectedBody = "Avaliacao created successfully";
+
+        ResponseEntity<String> avaliacao = testRestTemplate.postForEntity("/api/avaliacao/new", avaliacaoPostRequest, String.class);
+
+        System.out.println(avaliacao);
+
+        Assertions.assertThat(avaliacao).isNotNull();
+        Assertions.assertThat(avaliacao.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+        Assertions.assertThat(avaliacao.getBody()).isNotNull();
+        Assertions.assertThat(avaliacao.getBody()).isEqualTo(expectedBody);
+
+    }
+
+
 }
