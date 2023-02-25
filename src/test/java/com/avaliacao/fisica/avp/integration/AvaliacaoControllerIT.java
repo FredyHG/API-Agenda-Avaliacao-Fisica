@@ -23,6 +23,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.net.URI;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
@@ -75,13 +78,36 @@ public class AvaliacaoControllerIT {
 
         ResponseEntity<String> avaliacao = testRestTemplate.postForEntity("/api/avaliacao/new", avaliacaoPostRequest, String.class);
 
-        System.out.println(avaliacao);
-
         Assertions.assertThat(avaliacao).isNotNull();
         Assertions.assertThat(avaliacao.getStatusCode()).isEqualTo(HttpStatus.CREATED);
         Assertions.assertThat(avaliacao.getBody()).isNotNull();
         Assertions.assertThat(avaliacao.getBody()).isEqualTo(expectedBody);
 
+    }
+
+    @Test
+    @DisplayName("Return a 'AvaliacaoGetDto' when successful")
+    void return_A_AvaliacaoGetDto_When_Successful(){
+
+        String url = "http://localhost:" + this.port;
+
+        clienteRepository.save(ClienteCreator.createValidClient());
+        avaliacaoRepository.save(AvaliacaoCreator.createValidAvaliacao());
+
+        AvaliacaoGetRequest expectedBody = AvaliacaoCreator.createValidAvaliacaoGetRequest();
+
+
+
+        URI uri = UriComponentsBuilder.fromHttpUrl(url).path("/api/avaliacao/find")
+                .queryParam("cpf", "123.123.123-12").build().toUri();
+
+        AvaliacaoGetRequest avaliacao = testRestTemplate.exchange(uri, HttpMethod.GET, null,
+                new ParameterizedTypeReference<AvaliacaoGetRequest>() {
+                }).getBody();
+
+
+        Assertions.assertThat(avaliacao).isNotNull();
+        Assertions.assertThat(avaliacao.getAlergias()).isEqualTo(expectedBody.getAlergias());
     }
 
 
