@@ -3,7 +3,6 @@ package com.avaliacao.fisica.avp.controllers;
 import com.avaliacao.fisica.avp.model.ClienteModel;
 import com.avaliacao.fisica.avp.requests.AvaliacaoGetRequest;
 import com.avaliacao.fisica.avp.requests.AvaliacaoPostRequest;
-import com.avaliacao.fisica.avp.requests.ClientePostRequest;
 import com.avaliacao.fisica.avp.services.AvaliacaoService;
 import com.avaliacao.fisica.avp.services.ClienteService;
 import com.avaliacao.fisica.avp.utils.AvaliacaoCreator;
@@ -21,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;

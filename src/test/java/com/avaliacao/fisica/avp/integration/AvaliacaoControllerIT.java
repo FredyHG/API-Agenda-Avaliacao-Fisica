@@ -1,12 +1,10 @@
 package com.avaliacao.fisica.avp.integration;
 
 import com.avaliacao.fisica.avp.model.AvaliacaoModel;
-import com.avaliacao.fisica.avp.model.ClienteModel;
 import com.avaliacao.fisica.avp.repositories.AvaliacaoRepository;
 import com.avaliacao.fisica.avp.repositories.ClienteRepository;
 import com.avaliacao.fisica.avp.requests.AvaliacaoGetRequest;
 import com.avaliacao.fisica.avp.requests.AvaliacaoPostRequest;
-import com.avaliacao.fisica.avp.requests.ClientePostRequest;
 import com.avaliacao.fisica.avp.utils.AvaliacaoCreator;
 import com.avaliacao.fisica.avp.utils.ClienteCreator;
 import com.avaliacao.fisica.avp.wrapper.PageableResponse;

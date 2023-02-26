@@ -1,15 +1,12 @@
 package com.avaliacao.fisica.avp.services;
 
 import com.avaliacao.fisica.avp.model.AvaliacaoModel;
-import com.avaliacao.fisica.avp.model.ClienteModel;
 import com.avaliacao.fisica.avp.repositories.AvaliacaoRepository;
 import com.avaliacao.fisica.avp.requests.AvaliacaoGetRequest;
 import com.avaliacao.fisica.avp.requests.AvaliacaoPostRequest;
 import com.avaliacao.fisica.avp.utils.AvaliacaoCreator;
 import com.avaliacao.fisica.avp.utils.ClienteCreator;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.assertj.core.api.Assertions;
-import org.checkerframework.checker.nullness.Opt;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -21,7 +18,6 @@ import org.mockito.Mock;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
