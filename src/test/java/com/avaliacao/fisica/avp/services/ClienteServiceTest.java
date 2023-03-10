@@ -59,7 +59,7 @@ class ClienteServiceTest {
 
     @Test
     @DisplayName("Should be able to create Cliente")
-    public void should_be_able_to_create_cliente(){
+    void should_be_able_to_create_cliente(){
         ClientePostRequest clientToBeSaved = ClienteCreator.createValidClientPostRequest();
 
         Optional<ClienteModel> savedCliente = clienteService.saveNewCliente(clientToBeSaved);
@@ -69,7 +69,7 @@ class ClienteServiceTest {
 
     @Test
     @DisplayName("Find by CPF throws BadRequestException when Cliente is not found")
-    public void findByCPF_ThrowsBadRequestException_WhenClienteIsNotFound(){
+    void findByCPF_ThrowsBadRequestException_WhenClienteIsNotFound(){
         BDDMockito.when(clienteRepositoryMock.findByCpf(ArgumentMatchers.anyString()))
                 .thenReturn(Optional.empty());
 
@@ -79,7 +79,7 @@ class ClienteServiceTest {
 
     @Test
     @DisplayName("Should be able to delete Cliente")
-    public void should_be_able_to_delete_cliente(){
+    void should_be_able_to_delete_cliente(){
 
         Assertions.assertThatCode(() -> clienteService.deleteCliente(1)).doesNotThrowAnyException();
 
@@ -87,7 +87,7 @@ class ClienteServiceTest {
 
     @Test
     @DisplayName("Should return a pageable list of 'Clientes'")
-    public void should_return_a_pageable_list_of_Cliente(){
+    void should_return_a_pageable_list_of_Cliente(){
         String expectedName = ClienteCreator.createValidClient().getNome();
 
         Page<ClienteModel> clientePage = clienteService.findAllClientPageable(PageRequest.of(1,1));
@@ -103,7 +103,7 @@ class ClienteServiceTest {
 
     @Test
     @DisplayName("Should return a list of 'Cliente'")
-    public void should_return_a_list_of_Cliente(){
+    void should_return_a_list_of_Cliente(){
 
         List<ClienteModel> listOfCliente = List.of(ClienteCreator.createValidClient());
 
@@ -114,8 +114,6 @@ class ClienteServiceTest {
 
         List<ClienteModel> clienteList = clienteService.findAllCliente();
 
-        Assertions.assertThat(clienteList).isNotNull();
-
         Assertions.assertThat(clienteList).hasSize(1);
 
         Assertions.assertThat(clienteList.get(0).getNome()).isEqualTo(expectedName);
@@ -123,7 +121,7 @@ class ClienteServiceTest {
 
     @Test
     @DisplayName("Should return a 'Cliente' by ID")
-    public void should_return_a_Client_by_ID() {
+    void should_return_a_Client_by_ID() {
         ClienteModel expectedCliente = ClienteCreator.createValidClient();
 
         Optional<ClienteModel> cliente = clienteService.findById(1);
@@ -133,7 +131,7 @@ class ClienteServiceTest {
 
     @Test
     @DisplayName("Should return a 'Cliente' by NomeAndSobrenome")
-    public void should_return_a_Client_by_nome_and_sobrenome() {
+    void should_return_a_Client_by_nome_and_sobrenome() {
         ClienteModel expectedCliente = ClienteCreator.createValidClient();
 
         List<ClienteModel> contentPageList = clienteService.findByNomeAndSobrenome("test", "test");
@@ -142,7 +140,7 @@ class ClienteServiceTest {
     }
 
     @Test
-    public void should_return_a_edited_Cliente(){
+    void should_return_a_edited_Cliente(){
 
         Assertions.assertThatCode(() -> clienteService.replace(ClienteCreator.createValidPutRequest()))
                 .doesNotThrowAnyException();

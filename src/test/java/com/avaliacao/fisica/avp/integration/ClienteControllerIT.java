@@ -30,7 +30,7 @@ import java.util.Optional;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class ClienteControllerIT {
+class ClienteControllerIT {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -44,7 +44,7 @@ public class ClienteControllerIT {
 
     @Test
     @DisplayName("Should return a pageable list of 'Clientes'")
-    public void should_return_a_pageable_list_of_Cliente(){
+    void should_return_a_pageable_list_of_Cliente(){
 
         ClienteModel savedCliente = clienteRepository.save(ClienteCreator.createValidClient());
 
@@ -65,7 +65,7 @@ public class ClienteControllerIT {
 
     @Test
     @DisplayName("Should return a 'Cliente' by ID")
-    public void should_Return_a_Cliente_by_id(){
+    void should_Return_a_Cliente_by_id(){
         ClienteModel savedCliente = clienteRepository.save(ClienteCreator.createValidClient());
 
         long expectedId = savedCliente.getId();
@@ -80,7 +80,7 @@ public class ClienteControllerIT {
 
     @Test
     @DisplayName("Should return a List of 'Cliente' by NomeAndSobrenome")
-    public void should_return_a_List_of_Cliente_by_NomeAndSobrenome() {
+    void should_return_a_List_of_Cliente_by_NomeAndSobrenome() {
 
         String url = "http://localhost:" + this.port;
 
@@ -105,7 +105,7 @@ public class ClienteControllerIT {
 
     @Test
     @DisplayName("Should return a ResponseEntity with the message 'Cliente not found'")
-    public void Should_return_a_ReponseEntity_with_the_message_Cliente_not_found() {
+    void Should_return_a_ReponseEntity_with_the_message_Cliente_not_found() {
 
         String url = "http://localhost:" + this.port;
 
@@ -119,9 +119,9 @@ public class ClienteControllerIT {
 
         Assertions.assertThat(clienteList).isNotNull();
 
-        Assertions.assertThat(clienteList.getStatusCode().is4xxClientError());
+        Assertions.assertThat(clienteList.getStatusCode().is4xxClientError()).isTrue();
 
-        Assertions.assertThat(clienteList.getBody()).isEqualTo("Cliente not found");
+        Assertions.assertThat(clienteList.getBody()).isEqualTo("Cliente not exists!");
 
 
     }
@@ -143,7 +143,7 @@ public class ClienteControllerIT {
 
     @Test
     @DisplayName("Should_return_a_HttpStatusCode_204_NO_CONTENT_and_update_Cliente")
-    public void should_return_a_HttpStatusCode_204_NO_CONTENT_and_update_cliente() {
+    void should_return_a_HttpStatusCode_204_NO_CONTENT_and_update_cliente() {
 
         ClienteModel cliente = clienteRepository.save(ClienteCreator.createValidClient());
 
@@ -162,7 +162,7 @@ public class ClienteControllerIT {
 
     @Test
     @DisplayName("Should_return_a_HttpStatusCode_204_NO_CONTENT_and_delete_Cliente")
-    public void should_return_a_HttpStatusCode_204_NO_CONTENT_and_delete_cliente() {
+    void should_return_a_HttpStatusCode_204_NO_CONTENT_and_delete_cliente() {
 
         String url = "http://localhost:" + this.port + "/api/cliente/delete/1";
 

@@ -4,6 +4,7 @@ import com.avaliacao.fisica.avp.model.ClienteModel;
 import com.avaliacao.fisica.avp.requests.ClientePostRequest;
 import com.avaliacao.fisica.avp.requests.ClientePutRequest;
 import com.avaliacao.fisica.avp.services.ClienteService;
+import com.avaliacao.fisica.avp.utils.RegexChecker;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -15,8 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/api/cliente")
@@ -37,7 +36,7 @@ public class ClienteController {
             return ResponseEntity.status(HttpStatus.OK).body(byId.get());
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cliente not found");
+        return clienteNotExists();
     }
 
     @GetMapping("/find")
@@ -45,7 +44,7 @@ public class ClienteController {
        List<ClienteModel> cliente = clienteService.findByNomeAndSobrenome(nome, sobrenome);
 
         if(cliente.isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cliente not found");
+            return clienteNotExists();
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(cliente);
@@ -56,7 +55,7 @@ public class ClienteController {
         Optional<ClienteModel> clienteExist = clienteService.findById(id);
 
         if(clienteExist.isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cliente not found");
+            return clienteNotExists();
         }
 
         clienteService.deleteCliente(id);
@@ -71,7 +70,7 @@ public class ClienteController {
         Optional<ClienteModel> clienteExists = clienteService.findByCpf(cliente.getCpf());
 
         if (clienteExists.isEmpty()){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cliente not found");
+            return clienteNotExists();
         }
 
         clienteService.replace(cliente);
@@ -83,10 +82,7 @@ public class ClienteController {
     @PostMapping("/new")
     public ResponseEntity<String> createNewCliente(@RequestBody @Valid ClientePostRequest cliente){
 
-        Pattern pattern = Pattern.compile("^[0-9]{3}\\.[0-9]{3}\\.[0-9]{3}\\-[0-9]{2}$");
-        Matcher matcher = pattern.matcher(cliente.getCpf());
-
-        if(!matcher.find()){
+        if(!RegexChecker.isValidCPF(cliente.getCpf())){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("CPF is not valid");
         }
 
@@ -104,6 +100,10 @@ public class ClienteController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body("Cliente created successfully");
 
+    }
+
+    private static ResponseEntity<Object> clienteNotExists(){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Cliente not exists!");
     }
 
 }

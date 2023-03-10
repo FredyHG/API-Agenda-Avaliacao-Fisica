@@ -10,20 +10,22 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @Mapper(componentModel = "spring")
 public interface AvaliacaoGetRequestMapper {
 
-
     AvaliacaoGetRequestMapper INSTANCE = Mappers.getMapper(AvaliacaoGetRequestMapper.class);
-
 
     @Mapping(source = "clienteId", target = "cliente")
     AvaliacaoGetRequest toAvaliacaoGetRequest(AvaliacaoModel avaliacaoModel, @Context ClienteService clienteService);
 
     default ClienteModel toClienteEntity(Long clienteId, @Context ClienteService clienteService) {
-        return clienteService.findById(clienteId).get();
+        Optional<ClienteModel> clienteExist =  clienteService.findById(clienteId);
+
+        return clienteExist.orElseGet(ClienteModel::new);
+
     }
 
     List<AvaliacaoGetRequest> toAvaliacaoGetRequestList(List<AvaliacaoModel> avaliacaoModelList, @Context ClienteService clienteService);

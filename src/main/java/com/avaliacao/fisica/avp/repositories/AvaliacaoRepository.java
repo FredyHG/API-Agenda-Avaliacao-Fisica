@@ -12,6 +12,6 @@ public interface AvaliacaoRepository extends JpaRepository<AvaliacaoModel, Long>
     Optional<AvaliacaoModel> findByClienteId(Long id);
 
     @Query(value = "SELECT p FROM avaliacao p WHERE p.clienteId = :id AND p.status = true")
-    Optional<AvaliacaoModel> findByCpfIfStatusTrue(Long id);
+    Optional<AvaliacaoModel> findByIdIfStatusTrue(Long id);
 
 }

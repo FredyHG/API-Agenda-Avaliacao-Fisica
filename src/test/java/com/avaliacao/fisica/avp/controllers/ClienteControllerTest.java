@@ -18,7 +18,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @ExtendWith(SpringExtension.class)
@@ -52,7 +51,7 @@ class ClienteControllerTest {
 
     @Test
     @DisplayName("Should return a pageable list of 'Clientes'")
-    public void should_return_a_pageable_list_of_Cliente(){
+    void should_return_a_pageable_list_of_Cliente(){
         String expectedName = ClienteCreator.createValidClient().getNome();
 
         Page<ClienteModel> clientePage = clienteController.listAllClientes(null).getBody();
@@ -67,7 +66,7 @@ class ClienteControllerTest {
     }
 
     @Test
-    public void should_return_a_edited_Cliente(){
+    void should_return_a_edited_Cliente(){
 
         Assertions.assertThatCode(() -> clienteServiceMock.replace(ClienteCreator.createValidPutRequest()))
                 .doesNotThrowAnyException();
@@ -76,7 +75,7 @@ class ClienteControllerTest {
 
     @Test
     @DisplayName("Should return a 'Cliente' by ID")
-    public void should_return_a_Client_by_ID() {
+    void should_return_a_Client_by_ID() {
         ClienteModel expectedCliente = ClienteCreator.createValidClient();
 
         Object cliente = clienteController.findById(1).getBody();
@@ -86,18 +85,17 @@ class ClienteControllerTest {
 
     @Test
     @DisplayName("Should return a 'Cliente' by NomeAndSobrenome")
-    public void should_return_a_Client_by_nome_and_sobrenome() {
+    void should_return_a_Client_by_nome_and_sobrenome() {
         PageImpl<ClienteModel> clientePage = new PageImpl<>(List.of(ClienteCreator.createValidClient()));
 
         Object body = clienteController.findByName("test", "test").getBody();
 
-
-        Assertions.assertThat(Objects.equals(body, clientePage));
+        Assertions.assertThat(body).isEqualTo(clientePage.get().toList());
     }
 
     @Test
     @DisplayName("Should be able to delete Cliente")
-    public void should_be_able_to_delete_cliente(){
+    void should_be_able_to_delete_cliente(){
 
         Assertions.assertThatCode(() -> clienteController.deleteById(1)).doesNotThrowAnyException();
 
@@ -105,7 +103,7 @@ class ClienteControllerTest {
 
     @Test
     @DisplayName("Should be able to create Cliente")
-    public void should_be_able_to_create_cliente(){
+    void should_be_able_to_create_cliente(){
         ClientePostRequest clientToBeSaved = ClienteCreator.createValidClientPostRequest();
 
         String expected = "Cliente created successfully";

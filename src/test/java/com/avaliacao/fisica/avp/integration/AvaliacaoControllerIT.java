@@ -28,7 +28,7 @@ import java.net.URI;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureTestDatabase
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class AvaliacaoControllerIT {
+class AvaliacaoControllerIT {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -44,7 +44,7 @@ public class AvaliacaoControllerIT {
 
     @Test
     @DisplayName("Should return a pageable list of 'Avaliacao'")
-    public void should_return_a_pageable_list_of_Cliente(){
+    void should_return_a_pageable_list_of_Cliente(){
 
         clienteRepository.save(ClienteCreator.createValidClient());
 

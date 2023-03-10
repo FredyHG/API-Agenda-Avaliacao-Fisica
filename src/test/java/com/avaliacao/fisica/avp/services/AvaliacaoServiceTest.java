@@ -57,11 +57,13 @@ class AvaliacaoServiceTest {
 
         BDDMockito.when(clienteService.findById(ArgumentMatchers.anyLong()))
                 .thenReturn(Optional.of(ClienteCreator.createValidClient()));
+
+
     }
 
     @Test
     @DisplayName("Should be able to create Avaliacao")
-    public void should_be_able_to_create_Avaliacao(){
+    void should_be_able_to_create_Avaliacao(){
         AvaliacaoPostRequest avaliacaoToBeSaved = AvaliacaoCreator.createValidAvaliacaoPostRequest();
 
         clienteService.saveNewCliente(ClienteCreator.createValidClientPostRequest());
@@ -75,7 +77,7 @@ class AvaliacaoServiceTest {
 
     @Test
     @DisplayName("Should return a pageable list of 'Avaliacao'")
-    public void should_return_a_pageable_list_of_Cliente(){
+    void should_return_a_pageable_list_of_Cliente(){
         String expectedAlergias = AvaliacaoCreator.createValidAvaliacao().getAlergias();
 
         Page<AvaliacaoGetRequest> avaliacaoPage = avaliacaoService.findAllAvaliacoesPageable(PageRequest.of(1,1));
@@ -91,7 +93,7 @@ class AvaliacaoServiceTest {
 
     @Test
     @DisplayName("Should return a 'Avaliacao' by Cliente id")
-    public void should_return_a_Avaliacao_by_Cliente_Id(){
+    void should_return_a_Avaliacao_by_Cliente_Id(){
         AvaliacaoModel expectedAvaliacao = AvaliacaoCreator.createValidAvaliacao();
 
         Optional<AvaliacaoModel> avaliacao = avaliacaoService.findByIdCliente(1L);
@@ -103,7 +105,7 @@ class AvaliacaoServiceTest {
 
     @Test
     @DisplayName("Should return a 'AvaliacaoDTO' by Cliente id")
-    public void should_return_a_AvaliacaoDTO_by_Cliente_Id(){
+    void should_return_a_AvaliacaoDTO_by_Cliente_Id(){
 
         AvaliacaoGetRequest expectedAvaliacao = AvaliacaoCreator.createValidAvaliacaoGetRequest();
 
@@ -114,6 +116,14 @@ class AvaliacaoServiceTest {
         Assertions.assertThat(avaliacao.get().getLimitacoesFisicas()).isEqualTo(expectedAvaliacao.getLimitacoesFisicas());
 
     }
+
+//    @Test
+//    @DisplayName("Should return 'Edited' Avaliacao")
+//    void should_return_a_Edited_Avaliacao(){
+//
+//
+//
+//    }
 
 
 

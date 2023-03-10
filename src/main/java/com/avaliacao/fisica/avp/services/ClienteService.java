@@ -42,7 +42,6 @@ public class ClienteService {
 
     }
 
-
     public void replace(ClientePutRequest clientePutRequest){
         ClienteModel savedCliente = findByCPFOrThrowBadRequestException(clientePutRequest.getCpf());
 
@@ -64,8 +63,6 @@ public class ClienteService {
         clienteRepository.delete(findById(id).orElseThrow(() -> new BadRequestException("Cliente not found")));
 
     }
-
-
 
     public ClienteModel findByCPFOrThrowBadRequestException(String cpf) {
         return clienteRepository.findByCpf(cpf).orElseThrow(() -> new BadRequestException("Cliente not Found"));

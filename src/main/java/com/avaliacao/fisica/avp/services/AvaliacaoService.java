@@ -7,6 +7,7 @@ import com.avaliacao.fisica.avp.model.ClienteModel;
 import com.avaliacao.fisica.avp.repositories.AvaliacaoRepository;
 import com.avaliacao.fisica.avp.requests.AvaliacaoGetRequest;
 import com.avaliacao.fisica.avp.requests.AvaliacaoPostRequest;
+import com.avaliacao.fisica.avp.requests.AvaliacaoPutRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -21,27 +22,21 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AvaliacaoService {
 
-
     private final AvaliacaoRepository avaliacaoRepository;
 
     private final ClienteService clienteService;
-
-
-
 
     @Transactional
     public Optional<AvaliacaoModel> saveNewAvaliacao(AvaliacaoPostRequest avaliacao){
 
         Optional<AvaliacaoModel> avaliacaoToBeSaved = Optional.of(AvaliacaoMapper.INSTANCE.toAvaliacao(avaliacao));
 
-        Optional<ClienteModel> cliente = clienteService.findByCpf(avaliacao.getCpf());
+        Optional<ClienteModel> cliente = clienteService.findByCpf(avaliacao.getClienteCpf());
 
 
         avaliacaoToBeSaved.get().setDataHora(avaliacao.getDataHora());
 
-        avaliacaoToBeSaved.get().setClienteId(cliente.get().getId());
-
-        System.out.println(avaliacaoToBeSaved.get().getDataHora());
+        cliente.ifPresent(clienteModel -> avaliacaoToBeSaved.get().setClienteId(clienteModel.getId()));
 
         AvaliacaoModel savedAvaliacao = avaliacaoRepository.save(avaliacaoToBeSaved.get());
 
@@ -53,10 +48,23 @@ public class AvaliacaoService {
         return avaliacaoRepository.findByClienteId(id);
     }
 
+    public Optional<AvaliacaoModel> findByIdClienteWithStatusTrue(Long id) {
+        return avaliacaoRepository.findByIdIfStatusTrue(id);
+    }
+
+
+
     public Optional<AvaliacaoGetRequest> findByIdClienteDTO(Long id) {
 
-        AvaliacaoGetRequest avaliacao = AvaliacaoGetRequestMapper.INSTANCE.toAvaliacaoGetRequest(avaliacaoRepository.findByClienteId(id).get(), clienteService);
-        return Optional.of(avaliacao);
+
+        Optional<AvaliacaoModel> avaliacaoExists  = avaliacaoRepository.findByClienteId(id);
+
+        if(avaliacaoExists.isPresent()){
+            AvaliacaoGetRequest avaliacao = AvaliacaoGetRequestMapper.INSTANCE.toAvaliacaoGetRequest(avaliacaoExists.get(), clienteService);
+            return Optional.of(avaliacao);
+        }
+
+        return Optional.empty();
     }
 
     public Page<AvaliacaoGetRequest> findAllAvaliacoesPageable(Pageable pageable) {
@@ -69,4 +77,24 @@ public class AvaliacaoService {
         return new PageImpl<>(avaliacaoGetRequest);
 
     }
+
+    public Optional<AvaliacaoGetRequest> replaceAvaliacao(AvaliacaoPutRequest avaliacao){
+
+        Optional<AvaliacaoModel> avaliacaoToBeSaved = Optional.of(AvaliacaoMapper.INSTANCE.toAvaliacao(avaliacao));
+
+        Optional<ClienteModel> cliente = clienteService.findByCpf(avaliacao.getClienteCpf());
+
+        avaliacaoToBeSaved.get().setDataHora(avaliacao.getDataHora());
+
+        cliente.ifPresent(clienteModel -> avaliacaoToBeSaved.get().setClienteId(clienteModel.getId()));
+
+        AvaliacaoModel avaliacaoSaved = avaliacaoRepository.save(avaliacaoToBeSaved.get());
+
+        AvaliacaoGetRequest avaliacaoGetRequest = AvaliacaoGetRequestMapper.INSTANCE.toAvaliacaoGetRequest(avaliacaoSaved, clienteService);
+
+        return Optional.of(avaliacaoGetRequest);
+    }
+
+
+
 }

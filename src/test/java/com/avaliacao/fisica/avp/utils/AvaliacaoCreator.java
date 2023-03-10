@@ -3,6 +3,7 @@ package com.avaliacao.fisica.avp.utils;
 import com.avaliacao.fisica.avp.model.AvaliacaoModel;
 import com.avaliacao.fisica.avp.requests.AvaliacaoGetRequest;
 import com.avaliacao.fisica.avp.requests.AvaliacaoPostRequest;
+import com.avaliacao.fisica.avp.requests.AvaliacaoPutRequest;
 
 import java.time.LocalDateTime;
 
@@ -23,7 +24,7 @@ public class AvaliacaoCreator {
                 .dataHora(LocalDateTime.now().plusMinutes(5))
                 .alergias("Pelos")
                 .limitacoesFisicas("Dor no joelho")
-                .cpf("123.123.123-12")
+                .clienteCpf("123.123.123-12")
                 .build();
     }
 
@@ -34,6 +35,15 @@ public class AvaliacaoCreator {
                 .status(false)
                 .cliente(ClienteCreator.createValidClient())
                 .limitacoesFisicas("Dor no joelho")
+                .build();
+    }
+
+    public static AvaliacaoPutRequest createValidAvaliacaoPutRequest(){
+        return AvaliacaoPutRequest.builder()
+                .dataHora(LocalDateTime.now().plusMinutes(5))
+                .alergias("Cheiro verde")
+                .limitacoesFisicas("Dor nas costas")
+                .clienteCpf("123.123.123-12")
                 .build();
     }
 

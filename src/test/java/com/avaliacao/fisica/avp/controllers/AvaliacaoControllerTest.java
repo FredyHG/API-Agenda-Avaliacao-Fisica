@@ -54,7 +54,7 @@ class AvaliacaoControllerTest {
 
     @Test
     @DisplayName("Should return a pageable list of 'Avaliacao'")
-    public void should_return_a_pageable_list_of_Cliente(){
+    void should_return_a_pageable_list_of_Cliente(){
         ClienteModel expectedCliente = ClienteCreator.createValidClient();
 
         Page<AvaliacaoGetRequest> avaliacaoPage = avaliacaoController.listAllAvaliacoes(null).getBody();
@@ -70,21 +70,23 @@ class AvaliacaoControllerTest {
 
     @Test
     @DisplayName("Should be able to create Cliente")
-    public void should_be_able_to_create_cliente(){
+    void should_be_able_to_create_cliente(){
         AvaliacaoPostRequest avaliacaoToBeSaved = AvaliacaoCreator.createValidAvaliacaoPostRequest();
 
         String expectedString = "Avaliacao created successfully";
-        String expectedBody  = avaliacaoController.createNewAvaliacao(avaliacaoToBeSaved).getBody();
+        String expectedBody  = avaliacaoController.createNewAvaliacao(avaliacaoToBeSaved).getBody().toString();
 
         Assertions.assertThat(expectedBody).isEqualTo(expectedString);
     }
 
     @Test
     @DisplayName("Should return a 'AvaliacaoDTO' by Cliente id")
-    public void should_return_a_AvaliacaoDTO_by_Cliente_Id(){
+    void should_return_a_AvaliacaoDTO_by_Cliente_Id(){
 
         ClienteModel cliente = ClienteCreator.createValidClient();
         cliente.setId(1L);
+
+        cliente.setCpf("123");
 
         BDDMockito.when(clienteServiceMock.findByCpf(ArgumentMatchers.anyString()))
                 .thenReturn(Optional.of(cliente));
